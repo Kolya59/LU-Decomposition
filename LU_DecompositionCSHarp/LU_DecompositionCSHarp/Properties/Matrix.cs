@@ -68,8 +68,9 @@ namespace LU_DecompositionCSHarp.Properties
 		{
 			var result = this;
 			U = this;
-			L = new Matrix(_size);
+			L = this;
 			
+			ChooseMainElementByColumn(0);
 			for (var i = 0; i < _size; i++)
 			{
 				U.Data[0, i] = Data[0, i] / Data[0, 0];
@@ -89,7 +90,7 @@ namespace LU_DecompositionCSHarp.Properties
 					U.Data[i,j] -= U.Data[i - 1,j] * coef;
 
 					var sum = 0.0;
-					for (var k = 0; k < j - 1; k++)
+					for (var k = 0; k < j; k++)
 					{
 						sum += L.Data[i,k] * U.Data[k,j];
 					}
@@ -100,13 +101,13 @@ namespace LU_DecompositionCSHarp.Properties
 		}
 
 		// Нахождение определителя
-		public double Determinant(ref Matrix l)
+		public double Determinant()
 		{
 			// Произведение главной диагонали L на -1 в степени количества перестановок
 			var result = 1.0;
 			for (var i = 0; i < _size; i++)
 			{
-				result *= l.Data[i,i];
+				result *= L.Data[i,i];
 			}
 
 			result *= _determinantSign ? 1 : -1;
